@@ -52,9 +52,14 @@ bee-game/
 
 ### Stage 4 — Automated build (Claude Code, Fable 5)
 
-Claude Fable 5, running in Claude Code, was given a single prompt: read the
-design doc in full, then build every file in a specified order, syntax-checking
-each one before moving on, with no questions asked. The build sequence:
+The build prompt itself was also authored with Sonnet 4.6 in chat — one model
+writing the marching orders for another. It instructed the builder to read the
+design doc in full, build every file in a specified order, syntax-check each
+one before moving on, and make all decisions from the doc without asking
+questions.
+
+Claude Fable 5, running in Claude Code, executed that prompt end-to-end. The
+build sequence:
 
 1. `package.json` → `npm install`
 2. `database/db.js` → verified by requiring it in Node
@@ -74,7 +79,9 @@ repo, and git history rewritten so none of it remains.
 
 **Takeaway:** an explicit build order with a per-file verification step lets the
 agent run end-to-end without supervision, and the Known Issues section of the
-design doc genuinely prevented every listed bug from reappearing.
+design doc genuinely prevented every listed bug from reappearing. Having Sonnet
+draft the build prompt also meant the spec and the instructions for executing it
+were written to match each other.
 
 ## The Game
 
