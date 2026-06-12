@@ -50,6 +50,10 @@ bee-game/
 └── design-doc.md
 ```
 
+A sanitized copy of that design document is included in this repo as
+[`design-doc.md`](design-doc.md) — private links removed, and the setup section
+rewritten to target local development on any OS (see below).
+
 ### Stage 4 — Automated build (Claude Code, Fable 5)
 
 The build prompt itself was also authored with Sonnet 4.6 in chat — one model
@@ -93,15 +97,24 @@ were written to match each other.
 
 ### Run it locally
 
-Requires Node.js 18+.
+Works on Windows, macOS, and Linux. Requires Node.js 18+ — prefer an
+even-numbered LTS release (18/20/22), which gets you a prebuilt SQLite binary
+with no compiler or Python needed. Before installing, run the **preflight
+checks** in section 17 of [`design-doc.md`](design-doc.md) — they catch the
+common failure modes (unusual Node versions, customized npm registries,
+missing build tools, Rosetta-emulated Node on Apple Silicon).
 
 ```bash
 npm install
+node -e "require('better-sqlite3'); console.log('sqlite ok')"
 npm start
 # open http://localhost:3000
 ```
 
-### Production
+### Production (optional)
+
+Not needed for the tutorial — local dev stops at `npm start`. For a persistent
+Linux host:
 
 ```bash
 npm install -g pm2
@@ -109,10 +122,12 @@ pm2 start ecosystem.config.js
 ```
 
 The SQLite database and the generated salt live in `./data/` (gitignored).
+Serverless hosts won't work: SQLite needs a persistent writable filesystem.
 
 ## Repo Status / Roadmap
 
 - [x] Stage 1–4 complete; game built, deployed, and published
-- [ ] Sanitize the original design document (remove internal links and
-      machine-specific details) and add it to this repo as the Stage 2 artifact
+- [x] Sanitized design document added as [`design-doc.md`](design-doc.md) —
+      private links removed, setup section rewritten for local dev with
+      version/environment preflight checks
 - [ ] Annotate the build transcript into a step-by-step tutorial
